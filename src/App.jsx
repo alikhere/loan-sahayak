@@ -11,7 +11,7 @@ function App() {
         <img src="/image2.png" className=" max-w-80" />
       </div>
       <Form/>
-      
+
     </>
   )
 }
