@@ -102,7 +102,7 @@ const Form = () => {
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
-            <option value="3">3+</option>
+            <option value="4">3+</option>
           </select>
         </div>
 
@@ -209,9 +209,9 @@ const Form = () => {
             className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
             <option value="">Select</option>
-            <option value="0">Urban</option>
-            <option value="1">Semiurban</option>
-            <option value="2">Rural</option>
+            <option value="1">Urban</option>
+            <option value="2">Semiurban</option>
+            <option value="0">Rural</option>
           </select>
         </div>
 
