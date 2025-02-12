@@ -97,3 +97,12 @@ You can try the live version of the application here: [Live Demo ](https://loan-
    ```bash
    git clone https://github.com/your-username/loan-sahayak.git
    cd loan-sahayak
+   pip install -r requirements.txt
+   pip install -r requirements.txt
+   cd frontend
+   npm install
+   npm run dev
+ 
+
+
+
