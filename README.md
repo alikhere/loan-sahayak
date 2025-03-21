@@ -1,5 +1,8 @@
 # Loan Sahayak
 
+
+![Screenshot from 2025-02-13 03-22-58](https://github.com/user-attachments/assets/5b46d2c5-9e27-4440-bcc4-a8eb5429fc85)
+
 Loan Sahayak is a web application developed to predict whether a person is eligible for a loan based on user input. It uses machine learning models and follows a multi-step process involving data collection, preprocessing, model building, backend API development, and frontend development. This project is designed to assist users in determining their loan eligibility quickly and efficiently.
 
 ## Features
@@ -72,10 +75,6 @@ The frontend is built using **React.js** and allows users to input their loan de
 2. **API Request**: The frontend sends the form data to the backend.
 3. **Display Results**: Once the backend sends the prediction, the frontend displays whether the loan is approved or denied.
 
-## Screenshot
-
-
-![Screenshot from 2025-02-13 03-22-58](https://github.com/user-attachments/assets/5b46d2c5-9e27-4440-bcc4-a8eb5429fc85)
 
 ## Live Application
 
@@ -97,7 +96,6 @@ You can try the live version of the application here: [Live Demo ](https://loan-
    ```bash
    git clone https://github.com/your-username/loan-sahayak.git
    cd loan-sahayak
-   pip install -r requirements.txt
    pip install -r requirements.txt
    cd frontend
    npm install
