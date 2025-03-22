@@ -80,27 +80,4 @@ The frontend is built using **React.js** and allows users to input their loan de
 
 You can try the live version of the application here: [Live Demo ](https://loan-sahayak-z5n7.onrender.com/)
 
-## How to Run the Project
-
-### Prerequisites
-- Python 3.8+
-- Node.js (for React frontend)
-- FastAPI
-- scikit-learn
-- pandas, numpy
-
-### Installation Steps
-
-#### Backend:
-1. Clone the repository.
-   ```bash
-   git clone https://github.com/your-username/loan-sahayak.git
-   cd loan-sahayak
-   pip install -r requirements.txt
-   cd frontend
-   npm install
-   npm run dev
- 
-
-
 
