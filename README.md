@@ -1,7 +1,9 @@
 # Loan Sahayak
 
 
-![Screenshot from 2025-02-13 03-22-58](https://github.com/user-attachments/assets/5b46d2c5-9e27-4440-bcc4-a8eb5429fc85)
+![dashboard](./public/dashboard.png)
+
+## Overview
 
 Loan Sahayak is a web application developed to predict whether a person is eligible for a loan based on user input. It uses machine learning models and follows a multi-step process involving data collection, preprocessing, model building, backend API development, and frontend development. This project is designed to assist users in determining their loan eligibility quickly and efficiently.
 
@@ -76,8 +78,53 @@ The frontend is built using **React.js** and allows users to input their loan de
 3. **Display Results**: Once the backend sends the prediction, the frontend displays whether the loan is approved or denied.
 
 
+## Running Locally
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) v18 or higher
+- npm (comes with Node.js)
+
+### Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/<your-username>/loan-sahayak.git
+   cd loan-sahayak
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. Open your browser at `http://localhost:5173`
+
+> The frontend talks to the hosted backend API at `https://loan-sahayak-api.onrender.com/predict`, so no local backend setup is needed to run the frontend.
+
+### Other useful commands
+| Command | Description |
+|---|---|
+| `npm run dev` | Start local dev server with hot reload |
+| `npm run build` | Build for production (outputs to `dist/`) |
+| `npm run preview` | Preview the production build locally |
+
+
+## Backend Repository
+
+The backend (FastAPI + ML model) lives in a separate repository:
+
+**[loan-sahayak-backend](https://github.com/alikhere/Loan_sahayak_api)** <!-- replace with your repo URL -->
+
+It handles the `/predict` endpoint, data preprocessing, and serves the trained Logistic Regression model.
+
+
 ## Live Application
 
-You can try the live version of the application here: [Live Demo ](https://loan-sahayak-z5n7.onrender.com/)
+You can try the live version of the application here: [Live Demo](https://loan-sahayak-z5n7.onrender.com/)
 
 

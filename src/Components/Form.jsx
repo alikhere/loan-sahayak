@@ -1,5 +1,73 @@
 import React, { useState } from 'react';
 
+const Spinner = () => (
+  <svg
+    className="animate-spin h-5 w-5 text-white"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg className="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const XIcon = () => (
+  <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const SectionHeader = ({ title }) => (
+  <div className="flex items-center gap-2 mb-3">
+    <div className="w-1 h-3.5 bg-blue-500 rounded-full flex-shrink-0" />
+    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{title}</h3>
+  </div>
+);
+
+const SelectField = ({ label, name, value, onChange, options }) => (
+  <div>
+    <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      required
+      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none cursor-pointer"
+    >
+      <option value="">Select...</option>
+      {options.map(opt => (
+        <option key={opt.value} value={opt.value}>{opt.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const NumberField = ({ label, name, value, onChange, placeholder }) => (
+  <div>
+    <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
+    <input
+      type="number"
+      name={name}
+      value={value}
+      onChange={onChange}
+      required
+      placeholder={placeholder}
+      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 text-sm placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+    />
+  </div>
+);
+
 const Form = () => {
   const [formData, setFormData] = useState({
     Gender: '',
@@ -20,10 +88,7 @@ const Form = () => {
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -35,20 +100,16 @@ const Form = () => {
     try {
       const response = await fetch('https://loan-sahayak-api.onrender.com/predict', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error('An error occurred while fetching the prediction.');
-      } //creates a new Error object with a custom error message. This message provides context about what went wrong, making it easier to debug or inform the user.
+      if (!response.ok) throw new Error('Prediction failed.');
 
       const data = await response.json();
       setPrediction(data.prediction);
     } catch (err) {
-      setError('An error occurred while fetching the prediction.');
+      setError('Something went wrong. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -56,201 +117,191 @@ const Form = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-xl">
-      <h2 className="text-2xl font-bold text-center mb-4">Check Loan Approval Status</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Gender:</label>
-          <select
-            name="Gender" //Specifies the name of the form field. When the form is submitted, this name will be used as the key in the form data.
-            value={formData.Gender}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    <div className="max-w-xl mx-auto px-4 pb-16">
+      <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+        {/* Card header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+          <h2 className="text-xl font-bold text-white tracking-tight">Loan Eligibility Check</h2>
+          <p className="text-blue-100 text-xs mt-1 font-normal">
+            Fill in the details below to check your loan approval status.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="px-6 pt-4 pb-4 space-y-4">
+
+          {/* Personal Information */}
+          <div>
+            <SectionHeader title="Personal Information" />
+            <div className="grid grid-cols-2 gap-3">
+              <SelectField
+                label="Gender"
+                name="Gender"
+                value={formData.Gender}
+                onChange={handleChange}
+                options={[{ value: '0', label: 'Female' }, { value: '1', label: 'Male' }]}
+              />
+              <SelectField
+                label="Married"
+                name="Married"
+                value={formData.Married}
+                onChange={handleChange}
+                options={[{ value: '0', label: 'No' }, { value: '1', label: 'Yes' }]}
+              />
+              <SelectField
+                label="Dependents"
+                name="Dependents"
+                value={formData.Dependents}
+                onChange={handleChange}
+                options={[
+                  { value: '0', label: '0' },
+                  { value: '1', label: '1' },
+                  { value: '2', label: '2' },
+                  { value: '4', label: '3+' },
+                ]}
+              />
+              <SelectField
+                label="Education"
+                name="Education"
+                value={formData.Education}
+                onChange={handleChange}
+                options={[{ value: '0', label: 'Not Graduate' }, { value: '1', label: 'Graduate' }]}
+              />
+              <div className="col-span-2">
+                <SelectField
+                  label="Self Employed"
+                  name="Self_Employed"
+                  value={formData.Self_Employed}
+                  onChange={handleChange}
+                  options={[{ value: '0', label: 'No' }, { value: '1', label: 'Yes' }]}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-100" />
+
+          {/* Financial Details */}
+          <div>
+            <SectionHeader title="Financial Details" />
+            <div className="grid grid-cols-2 gap-3">
+              <NumberField
+                label="Applicant Income"
+                name="ApplicantIncome"
+                value={formData.ApplicantIncome}
+                onChange={handleChange}
+                placeholder="e.g. 5000"
+              />
+              <NumberField
+                label="Co-applicant Income"
+                name="CoapplicantIncome"
+                value={formData.CoapplicantIncome}
+                onChange={handleChange}
+                placeholder="e.g. 2000"
+              />
+              <NumberField
+                label="Loan Amount"
+                name="LoanAmount"
+                value={formData.LoanAmount}
+                onChange={handleChange}
+                placeholder="e.g. 150"
+              />
+              <NumberField
+                label="Loan Term (months)"
+                name="Loan_Amount_Term"
+                value={formData.Loan_Amount_Term}
+                onChange={handleChange}
+                placeholder="e.g. 360"
+              />
+            </div>
+          </div>
+
+          <div className="border-t border-gray-100" />
+
+          {/* Credit & Property */}
+          <div>
+            <SectionHeader title="Credit & Property" />
+            <div className="grid grid-cols-2 gap-3">
+              <SelectField
+                label="Credit History"
+                name="Credit_History"
+                value={formData.Credit_History}
+                onChange={handleChange}
+                options={[{ value: '0', label: 'No' }, { value: '1', label: 'Yes' }]}
+              />
+              <SelectField
+                label="Property Area"
+                name="Property_Area"
+                value={formData.Property_Area}
+                onChange={handleChange}
+                options={[
+                  { value: '1', label: 'Urban' },
+                  { value: '2', label: 'Semiurban' },
+                  { value: '0', label: 'Rural' },
+                ]}
+              />
+            </div>
+          </div>
+
+          {/* Submit button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-6 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-md"
           >
-            <option value="">Select</option>
-            <option value="0">Female</option>
-            <option value="1">Male</option>
-          </select>
-        </div>
+            {loading ? (
+              <>
+                <Spinner />
+                <span>Checking...</span>
+              </>
+            ) : (
+              'Check Status'
+            )}
+          </button>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Married:</label>
-          <select
-            name="Married"
-            value={formData.Married}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {/* Friendly loading message */}
+          {loading && (
+            <p className="text-center text-sm text-gray-400 -mt-3">
+              Hang tight, our model is crunching the numbers...
+            </p>
+          )}
+        </form>
+
+        {/* Error state */}
+        {error && (
+          <div className="mx-6 mb-4 px-4 py-3 bg-red-50 border border-red-100 rounded-xl">
+            <p className="text-red-500 text-xs font-medium">{error}</p>
+          </div>
+        )}
+
+        {/* Result state */}
+        {prediction !== null && (
+          <div
+            className={`mx-6 mb-5 px-5 py-4 rounded-xl border ${
+              prediction === 1
+                ? 'bg-emerald-50 border-emerald-200'
+                : 'bg-red-50 border-red-100'
+            }`}
           >
-            <option value="">Select</option>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Dependents:</label>
-          <select
-            name="Dependents"
-            value={formData.Dependents}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="4">3+</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Education:</label>
-          <select
-            name="Education"
-            value={formData.Education}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select</option>
-            <option value="0">Not Graduate</option>
-            <option value="1">Graduate</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Self Employed:</label>
-          <select
-            name="Self_Employed"
-            value={formData.Self_Employed}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select</option>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Applicant Income:</label>
-          <input
-            type="number"
-            name="ApplicantIncome"
-            value={formData.ApplicantIncome}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Coapplicant Income:</label>
-          <input
-            type="number"
-            name="CoapplicantIncome"
-            value={formData.CoapplicantIncome}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Loan Amount:</label>
-          <input
-            type="number"
-            name="LoanAmount"
-            value={formData.LoanAmount}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Loan Amount Term:</label>
-          <input
-            type="number"
-            name="Loan_Amount_Term"
-            value={formData.Loan_Amount_Term}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Credit History:</label>
-          <select
-            name="Credit_History"
-            value={formData.Credit_History}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select</option>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Property Area:</label>
-          <select
-            name="Property_Area"
-            value={formData.Property_Area}
-            onChange={handleChange}
-            required
-            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select</option>
-            <option value="1">Urban</option>
-            <option value="2">Semiurban</option>
-            <option value="0">Rural</option>
-          </select>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          {loading ? 'Checking...' : 'Check Status'}
-        </button>
-      </form>
-
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-{prediction !== null && (
-  <div
-    className={`mt-6 p-4 rounded-lg ${
-      prediction === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-    }`}
-  >
-    <h3 className="text-lg font-semibold">Loan Approval Status:</h3>
-    <p className="text-2xl">{prediction === 1 ? 'Approved' : 'Denied'}</p>
-  </div>
-)}
-{/*
-
-old version on above code
-{error && <p className="text-red-500 mt-4">{error}</p>}
-{prediction !== null && (
-  <div
-    className={mt-6 p-4 rounded-lg ${
-      prediction === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-    }}
-  >
-    <h3 className="text-lg font-semibold">Loan Approval Status:</h3>
-    <p className="text-2xl">{prediction === 1 ? 'Approved' : 'Denied'}</p>
-  </div>
-)} 
-  
-*/}
+            <div className="flex items-center gap-3">
+              {prediction === 1 ? <CheckIcon /> : <XIcon />}
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-0.5">
+                  Loan Approval Status
+                </p>
+                <p className={`text-xl font-bold ${prediction === 1 ? 'text-emerald-700' : 'text-red-600'}`}>
+                  {prediction === 1 ? 'Approved' : 'Not Approved'}
+                </p>
+              </div>
+            </div>
+            <p className={`text-xs mt-3 leading-relaxed ${prediction === 1 ? 'text-emerald-600' : 'text-red-500'}`}>
+              {prediction === 1
+                ? 'Great news! Based on your details, you appear to be eligible for this loan.'
+                : 'Based on the details provided, this application may not qualify. Consider reviewing your financial profile.'}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

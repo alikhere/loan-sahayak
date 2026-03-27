@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2755d6 55%, #4338ca 100%);
+  min-height: 100vh;
+}
+
+/* Remove number input spin arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -1,19 +1,15 @@
-import { useState } from 'react'
 import Form from './Components/Form.jsx';
-import './App.css'
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className=" flex justify-center">
-        <img src="/image2.png" className=" max-w-80" />
+    <div className="min-h-screen py-5">
+      <div className="flex justify-center mb-4">
+        <img src="/image2.png" className="max-w-36 drop-shadow-lg" alt="Loan Sahayak" />
       </div>
-      <Form/>
-
-    </>
-  )
+      <Form />
+    </div>
+  );
 }
 
-export default App
+export default App;
